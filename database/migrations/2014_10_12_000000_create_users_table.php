@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone', 20)->unique();
             $table->string('email')->unique()->nullable();
-            $table->foreignId('user_type_id');
+            $table->unsignedBigInteger('user_type_id');
+            $table->foreign('user_type_id')->references('id')->on('user_types');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
