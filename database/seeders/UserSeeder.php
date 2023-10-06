@@ -12,20 +12,28 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Super Admin',
-            'phone' => '01825712671',
-            'email' => 'golamnabi411330@gmail.com',
-            'user_type_id' => 1,
-            'password' => 12345678,
-        ]);
+        User::firstOrCreate(
+            [
+                'phone' => '01825712671',
+            ],
+            [
+                'name' => 'Super Admin',
+                'email' => 'golamnabi411330@gmail.com',
+                'user_type_id' => 1,
+                'password' => 12345678,
+            ]
+        );
 
-        User::create([
-            'name' => 'Customer',
-            'phone' => '01689325961',
-            'email' => 'golamnabi@gmail.com',
-            'user_type_id' => 3,
-            'password' => 12345678,
-        ]);
+        User::firstOrCreate(
+            [
+                'phone' => '01689325961',
+            ],
+            [
+                'name' => 'Customer',
+                'email' => 'golamnabi@gmail.com',
+                'user_type_id' => 3,
+                'password' => 12345678,
+            ]
+        );
     }
 }
