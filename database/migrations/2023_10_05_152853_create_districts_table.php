@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('districts', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('division_id');
-            $table->foreign('division_id')->references('id')->on('divisions');
+            $table->tinyIncrements('id');
+            $table->unsignedTinyInteger('division_id');
             $table->string('name', 50);
             $table->timestamps();
         });
