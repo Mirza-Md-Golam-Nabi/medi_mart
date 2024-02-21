@@ -15,7 +15,8 @@ class ThanaService
 
     public function index(): object
     {
-        return Thana::all();
+        return Thana::orderBy('name', 'asc')
+            ->get();
     }
 
     public function store(StoreThanaRequest $request): object
