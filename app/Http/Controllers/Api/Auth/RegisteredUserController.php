@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use App\Rules\PhoneNumber;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
@@ -21,15 +18,8 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RegisterRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'digits:11', new PhoneNumber, 'unique:' . User::class],
-            'email' => ['nullable', 'string', 'email:filter,rfc,dns', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'phone' => $request->phone,
@@ -42,6 +32,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        $user['api_token'] = $user->createToken('MediMart')->accessToken;
+        $user['token_type'] = "Bearer";
+
+        return formatResponse(0, 200, 'You are logged in', $user);
     }
 }

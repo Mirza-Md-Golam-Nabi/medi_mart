@@ -4,45 +4,40 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
-     */
-    public function create(): View
-    {
-        return view('auth.login');
-    }
-
-    /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $credentials = $request->only('phone', 'password');
+        $credentials['user_type_id'] = 3;
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            $user['api_token'] = $user->createToken('MediMart')->accessToken;
+            $user['token_type'] = "Bearer";
+
+            return formatResponse(0, 200, 'You are logged in', $user);
+        } else {
+            return formatResponse(1, 200, 'Password and Phone number do not match', null);
+        }
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): JsonResponse
     {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        $request->user()->token()->revoke();
+        return formatResponse(0, 200, "Successfully logged out", null);
     }
 }

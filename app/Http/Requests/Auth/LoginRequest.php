@@ -4,7 +4,9 @@ namespace App\Http\Requests\Auth;
 
 use App\Rules\PhoneNumber;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -34,6 +36,19 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
+    }
+
+    /**
      * Attempt to authenticate the request's credentials.
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -41,13 +56,13 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
         if (!Auth::attempt($this->only('phone', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
-            throw ValidationException::withMessages([
-                'phone' => trans('auth.failed'),
-            ]);
+            throw new HttpResponseException(response()->json(
+                ['message' => 'These credentials do not match our records.'],
+                422
+            ));
         }
 
         RateLimiter::clear($this->throttleKey());
@@ -68,12 +83,14 @@ class LoginRequest extends FormRequest
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
-        throw ValidationException::withMessages([
-            'phone' => trans('auth.throttle', [
+        throw new HttpResponseException(response()->json([
+            'message' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
-        ]);
+        ],
+            422
+        ));
     }
 
     /**
