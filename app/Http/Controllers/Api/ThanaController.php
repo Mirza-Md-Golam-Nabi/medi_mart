@@ -22,24 +22,24 @@ class ThanaController extends Controller
     public function index(): JsonResponse
     {
         $data = $this->thana->index();
-        return $this->formatResponse(0, 200, 'Success', $data);
+        return formatResponse(0, 200, 'Success', $data);
     }
 
     public function store(StoreThanaRequest $request): JsonResponse
     {
         $data = $this->thana->store($request);
-        return $this->formatResponse(0, 200, 'Success', $data);
+        return formatResponse(0, 200, 'Success', $data);
     }
 
     public function show(Thana $thana): JsonResponse
     {
-        return $this->formatResponse(0, 200, 'Success', $thana);
+        return formatResponse(0, 200, 'Success', $thana);
     }
 
     public function update(UpdateThanaRequest $request, Thana $thana): JsonResponse
     {
         $this->thana->update($request, $thana);
-        return $this->formatResponse(0, 200, 'Success', $thana->refresh());
+        return formatResponse(0, 200, 'Success', $thana->refresh());
     }
 
     public function destroy(Thana $thana): JsonResponse
@@ -51,7 +51,7 @@ class ThanaController extends Controller
     public function thanaList(District $district): JsonResponse
     {
         $data = $this->thana->thanaList($district->id);
-        return $this->formatResponse(0, 200, 'Success', $data);
+        return formatResponse(0, 200, 'Success', $data);
     }
 
 }

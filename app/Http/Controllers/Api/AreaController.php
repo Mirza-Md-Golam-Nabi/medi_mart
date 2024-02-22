@@ -22,24 +22,24 @@ class AreaController extends Controller
     public function index(): JsonResponse
     {
         $data = $this->area->index();
-        return $this->formatResponse(0, 200, 'Success', $data);
+        return formatResponse(0, 200, 'Success', $data);
     }
 
     public function store(StoreAreaRequest $request): JsonResponse
     {
         $data = $this->area->store($request);
-        return $this->formatResponse(0, 200, 'Success', $data);
+        return formatResponse(0, 200, 'Success', $data);
     }
 
     public function show(Area $area): JsonResponse
     {
-        return $this->formatResponse(0, 200, 'Success', $area);
+        return formatResponse(0, 200, 'Success', $area);
     }
 
     public function update(UpdateAreaRequest $request, Area $area): JsonResponse
     {
         $this->area->update($request, $area);
-        return $this->formatResponse(0, 200, 'Success', $area->refresh());
+        return formatResponse(0, 200, 'Success', $area->refresh());
     }
 
     public function destroy(Area $area): JsonResponse
@@ -51,6 +51,6 @@ class AreaController extends Controller
     public function areaList(Thana $thana): JsonResponse
     {
         $data = $this->area->areaList($thana->id);
-        return $this->formatResponse(0, 200, 'Success', $data);
+        return formatResponse(0, 200, 'Success', $data);
     }
 }

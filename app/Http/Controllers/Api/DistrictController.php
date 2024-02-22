@@ -19,6 +19,6 @@ class DistrictController extends Controller
     public function index(Division $division): JsonResponse
     {
         $districts = $this->district->index($division->id);
-        return $this->formatResponse(0, 200, 'Success', $districts);
+        return formatResponse(0, 200, 'Success', $districts);
     }
 }

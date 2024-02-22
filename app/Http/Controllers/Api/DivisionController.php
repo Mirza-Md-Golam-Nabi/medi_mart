@@ -18,6 +18,6 @@ class DivisionController extends Controller
     public function index(): JsonResponse
     {
         $divisions = $this->division->index();
-        return $this->formatResponse(0, 200, 'Success', $divisions);
+        return formatResponse(0, 200, 'Success', $divisions);
     }
 }
