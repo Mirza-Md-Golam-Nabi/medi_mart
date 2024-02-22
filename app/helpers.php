@@ -4,12 +4,24 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('authUser')) {
-    function authUser():  ? User
+    function authUser(): ?User
     {
         if (Auth::check()) {
             return Auth::user();
         }
 
         return null;
+    }
+}
+
+if (!function_exists('formatResponse')) {
+    function formatResponse(int $error, int $code, string $msg, mixed $data): object
+    {
+        return response()->json([
+            'error' => $error,
+            'code' => $code,
+            'msg' => $msg,
+            'data' => $data,
+        ]);
     }
 }
