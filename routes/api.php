@@ -3,9 +3,12 @@
 use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Api\Auth\RegisteredUserController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DistrictController;
 use App\Http\Controllers\Api\DivisionController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ThanaController;
+use App\Http\Controllers\Api\TypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +24,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [RegisteredUserController::class, 'store']);
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
-Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:api');
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy']);
+
+    Route::apiResource('types', TypeController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('products', ProductController::class);
+
+});
 
 Route::get('divisions', [DivisionController::class, 'index']);
 Route::get('districts/{division}', [DistrictController::class, 'index']);
