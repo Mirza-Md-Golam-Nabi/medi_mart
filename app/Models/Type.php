@@ -21,4 +21,9 @@ class Type extends Model
     {
         return $this->hasMany(Category::class, 'type_id', 'id');
     }
+
+    public function sub_category(): HasMany
+    {
+        return $this->hasMany(SubCategory::class, 'type_id', 'id');
+    }
 }

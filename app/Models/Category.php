@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'categories';
 
@@ -22,8 +24,8 @@ class Category extends Model
         return $this->belongsTo(Type::class, 'type_id', 'id');
     }
 
-    public function product(): HasMany
+    public function subcategory(): HasMany
     {
-        return $this->hasMany(Product::class, 'category_id', 'id');
+        return $this->hasMany(SubCategory::class, 'category_id', 'id');
     }
 }
