@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('type_id');
+            $table->unsignedTinyInteger('type_id');
             $table->foreign('type_id')->references('id')->on('types');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('name', 200);
             $table->string('image', 20)->nullable();
             $table->float('quantity', 10, 2);
-            $table->string('base_unit', 20);
-            $table->string('more_unit', 200);
-            $table->tinyInteger('is_active');
+            $table->string('unit', 20);
+            $table->decimal('price', 8, 2)->nullable();
+            $table->decimal('discount', 8, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
