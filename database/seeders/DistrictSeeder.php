@@ -13,8 +13,7 @@ class DistrictSeeder extends Seeder
      */
     public function run(): void
     {
-        Model::unguard();
-        District::insert([
+        $districts = [
             ['division_id' => 3, 'name' => 'Dhaka'],
             ['division_id' => 3, 'name' => 'Faridpur'],
             ['division_id' => 3, 'name' => 'Gazipur'],
@@ -79,6 +78,10 @@ class DistrictSeeder extends Seeder
             ['division_id' => 4, 'name' => 'Meherpur'],
             ['division_id' => 4, 'name' => 'Narail'],
             ['division_id' => 4, 'name' => 'Satkhira'],
-        ]);
+        ];
+
+        foreach ($districts as $district) {
+            District::firstOrCreate($district);
+        }
     }
 }

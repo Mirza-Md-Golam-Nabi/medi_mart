@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Type;
 use Illuminate\Database\Seeder;
 
 class TypeSeeder extends Seeder
@@ -12,6 +12,10 @@ class TypeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $types = ['Grocery', 'Medicine'];
+
+        foreach ($types as $type) {
+            Type::firstOrCreate(['title' => $type]);
+        }
     }
 }
