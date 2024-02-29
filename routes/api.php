@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DistrictController;
 use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SubCategoryController;
 use App\Http\Controllers\Api\ThanaController;
 use App\Http\Controllers\Api\TypeController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('types', TypeController::class);
     Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('subcategories', SubCategoryController::class);
+    Route::get('subcategory-list/{category}', [SubCategoryController::class, 'subcategoryList']);
     Route::apiResource('products', ProductController::class);
 
 });
