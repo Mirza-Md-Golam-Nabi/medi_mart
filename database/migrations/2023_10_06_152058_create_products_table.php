@@ -21,10 +21,8 @@ return new class extends Migration
             $table->foreign('sub_category_id')->references('id')->on('sub_categories');
             $table->string('name', 200);
             $table->string('image', 20)->nullable();
-            $table->float('quantity', 10, 2);
-            $table->string('unit', 20);
-            $table->decimal('price', 8, 2)->nullable();
-            $table->decimal('discount', 8, 2)->nullable();
+            $table->string('weight', 5)->nullable();
+            $table->string('unit', 20)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
