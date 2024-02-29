@@ -27,7 +27,7 @@ class AreaController extends Controller
 
     public function store(StoreAreaRequest $request): JsonResponse
     {
-        $data = $this->area->store($request);
+        $data = $this->area->store($request->validated());
         return formatResponse(0, 200, 'Success', $data);
     }
 
@@ -38,7 +38,7 @@ class AreaController extends Controller
 
     public function update(UpdateAreaRequest $request, Area $area): JsonResponse
     {
-        $this->area->update($request, $area);
+        $this->area->update($request->validated(), $area);
         return formatResponse(0, 200, 'Success', $area->refresh());
     }
 

@@ -22,9 +22,9 @@ class SubCategoryService
         return SubCategory::create($data);
     }
 
-    public function update(array $data, SubCategory $area): bool
+    public function update(array $data, SubCategory $subcategory): bool
     {
-        return $area->update($data);
+        return $subcategory->update($data);
     }
 
     public function softDelete(SubCategory $subcategory): bool

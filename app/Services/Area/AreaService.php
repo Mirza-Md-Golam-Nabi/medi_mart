@@ -19,14 +19,14 @@ class AreaService
             ->get();
     }
 
-    public function store(StoreAreaRequest $request): object
+    public function store(array $data): object
     {
-        return Area::create($request->validated());
+        return Area::create($data);
     }
 
-    public function update(UpdateAreaRequest $request, Area $area): bool
+    public function update(array $data, Area $area): bool
     {
-        return $area->update($request->validated());
+        return $area->update($data);
     }
 
     public function softDelete(Area $area): bool

@@ -23,9 +23,9 @@ class CategoryService
         return Category::create($data);
     }
 
-    public function update(array $data, Category $area): bool
+    public function update(array $data, Category $category): bool
     {
-        return $area->update($data);
+        return $category->update($data);
     }
 
     public function softDelete(Category $category): bool

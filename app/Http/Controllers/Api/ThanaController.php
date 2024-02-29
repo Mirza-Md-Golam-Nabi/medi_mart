@@ -27,7 +27,7 @@ class ThanaController extends Controller
 
     public function store(StoreThanaRequest $request): JsonResponse
     {
-        $data = $this->thana->store($request);
+        $data = $this->thana->store($request->validated());
         return formatResponse(0, 200, 'Success', $data);
     }
 
@@ -38,7 +38,7 @@ class ThanaController extends Controller
 
     public function update(UpdateThanaRequest $request, Thana $thana): JsonResponse
     {
-        $this->thana->update($request, $thana);
+        $this->thana->update($request->validated(), $thana);
         return formatResponse(0, 200, 'Success', $thana->refresh());
     }
 

@@ -2,8 +2,6 @@
 
 namespace App\Services\Thana;
 
-use App\Http\Requests\Thana\StoreThanaRequest;
-use App\Http\Requests\Thana\UpdateThanaRequest;
 use App\Models\Thana;
 
 class ThanaService
@@ -19,14 +17,14 @@ class ThanaService
             ->get();
     }
 
-    public function store(StoreThanaRequest $request): object
+    public function store(array $data): object
     {
-        return Thana::create($request->validated());
+        return Thana::create($data);
     }
 
-    public function update(UpdateThanaRequest $request, Thana $thana): bool
+    public function update(array $data, Thana $thana): bool
     {
-        return $thana->update($request->validated());
+        return $thana->update($data);
     }
 
     public function softDelete(Thana $thana): bool
