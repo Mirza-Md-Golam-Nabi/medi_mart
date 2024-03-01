@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\RegisteredUserController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DistrictController;
 use App\Http\Controllers\Api\DivisionController;
+use App\Http\Controllers\Api\OrderUserController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SubCategoryController;
 use App\Http\Controllers\Api\ThanaController;
@@ -35,7 +36,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('subcategory-list/{category}', [SubCategoryController::class, 'subcategoryList']);
     Route::apiResource('products', ProductController::class);
     Route::get('product-list/{sub_category}', [ProductController::class, 'productList']);
-
+    Route::apiResource('order-users', OrderUserController::class);
+    Route::get('order-user-list/{user_id?}', [OrderUserController::class, 'orderUserList']);
 });
 
 Route::get('divisions', [DivisionController::class, 'index']);

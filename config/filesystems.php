@@ -63,6 +63,13 @@ return [
             'visibility' => 'private',
         ],
 
+        'order_image' => [
+            'driver' => 'local',
+            'root' => public_path() . '/image/order_image',
+            'url' => public_path() . '/image/order_image',
+            'visibility' => 'private',
+        ],
+
     ],
 
     /*
