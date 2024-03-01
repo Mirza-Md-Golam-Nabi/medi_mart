@@ -34,6 +34,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('subcategories', SubCategoryController::class);
     Route::get('subcategory-list/{category}', [SubCategoryController::class, 'subcategoryList']);
     Route::apiResource('products', ProductController::class);
+    Route::get('product-list/{sub_category}', [ProductController::class, 'productList']);
 
 });
 
