@@ -2,8 +2,6 @@
 
 namespace App\Services\Area;
 
-use App\Http\Requests\Area\StoreAreaRequest;
-use App\Http\Requests\Area\UpdateAreaRequest;
 use App\Models\Area;
 
 class AreaService
