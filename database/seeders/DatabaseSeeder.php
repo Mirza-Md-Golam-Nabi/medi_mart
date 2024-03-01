@@ -7,6 +7,7 @@ use Database\Seeders\AreaSeeder;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\DistrictSeeder;
 use Database\Seeders\DivisionSeeder;
+use Database\Seeders\ProductSeeder;
 use Database\Seeders\SubCategorySeeder;
 use Database\Seeders\ThanaSeeder;
 use Database\Seeders\TypeSeeder;
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             TypeSeeder::class,
             CategorySeeder::class,
             SubCategorySeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }
