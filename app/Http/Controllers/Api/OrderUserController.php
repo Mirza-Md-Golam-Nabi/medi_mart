@@ -9,7 +9,10 @@ use App\Models\Address;
 use App\Models\OrderUser;
 use App\Services\Address\AddressService;
 use App\Services\OrderUser\OrderUserService;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderUserController extends Controller
 {
@@ -33,19 +36,35 @@ class OrderUserController extends Controller
             $image_name = $this->order_user->imageStore($request->image);
         }
 
-        $address = (new AddressService())->store([
-            'area_id' => $request->area_id,
-            'street_address' => $request->street_address,
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $order_user = $this->order_user->store(
-            [
-                'image' => $image_name,
-                'user_id' => auth()->id(),
-                'address_id' => $address->id,
-            ] +
-            $request->validated()
-        );
+            $address = (new AddressService())->store([
+                'area_id' => $request->area_id,
+                'street_address' => $request->street_address,
+            ]);
+
+            $order_user = $this->order_user->store(
+                [
+                    'image' => $image_name,
+                    'user_id' => auth()->id(),
+                    'address_id' => $address->id,
+                ] +
+                $request->validated()
+            );
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $description = 'Order User Store. user_id: ' . auth()->id();
+            $user_msg = 'Something wrong happened. Please try again.';
+            $error_msg = $e->getMessage() ?? $user_msg;
+            Log::channel('customer')->error($description . '. ' . $error_msg);
+
+            return formatResponse(1, 400, $user_msg, null);
+        }
 
         return formatResponse(0, 200, 'Success', $order_user);
     }
@@ -68,12 +87,30 @@ class OrderUserController extends Controller
 
         $address = Address::find($order_user->address_id);
 
-        (new AddressService())->update([
-            'area_id' => $request->area_id,
-            'street_address' => $request->street_address,
-        ], $address);
+        try {
+            DB::beginTransaction();
 
-        $this->order_user->update(['image' => $image_name] + $validated_data, $order_user);
+            (new AddressService())->update([
+                'area_id' => $request->area_id,
+                'street_address' => $request->street_address,
+            ], $address);
+
+            $this->order_user->update(['image' => $image_name] + $validated_data, $order_user);
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $description = 'Order User Update. user_id: ' . auth()->id();
+            $user_msg = 'Something wrong happened. Please try again.';
+            $error_msg = $e->getMessage() ?? $user_msg;
+            Log::channel('customer')->error($description . '. ' . $error_msg);
+
+            return formatResponse(1, 400, $user_msg, null);
+
+        }
+
         return formatResponse(0, 200, 'Success', $order_user->refresh());
     }
 
