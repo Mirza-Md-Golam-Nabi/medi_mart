@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('authUser')) {
@@ -15,7 +16,7 @@ if (!function_exists('authUser')) {
 }
 
 if (!function_exists('formatResponse')) {
-    function formatResponse(int $error, int $code, string $msg, mixed $data): object
+    function formatResponse(int $error, int $code, string $msg, mixed $data): JsonResponse
     {
         return response()->json([
             'error' => $error,
